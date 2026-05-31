@@ -1,1 +1,8 @@
-backend/.env
+./backend/.env
+./backend/__pycache__/
+./backend/alembic/__pycache__/
+./backend/core/__pycache__/
+./backend/database/__pycache__/
+./backend/database/crud/__pycache__/
+./backend/routes/__pycache__/
+./backend/utils/
