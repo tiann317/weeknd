@@ -192,7 +192,8 @@ def print_stops(train_label: str, stops: list):
             return datetime.strptime(t, "%y%m%d%H%M").strftime("%H:%M")
 
         print(
-            f"{i:02d} {stop['station'] or 'Unknown':<30} Arr: {fmt(stop['arrival'])}  Dep: {fmt(stop['departure'])}"
+            f"{i:02d} {stop['station'] or 'Unknown':<30} "
+            f"Arr: {fmt(stop['arrival'])}  Dep: {fmt(stop['departure'])}"
         )
 
 
@@ -203,5 +204,6 @@ def print_trains(station_name: str, trains: list):
         return
     for train in trains[:20]:
         print(
-            f"{train['type']} {train['number']:<10} Departure: {train['departure']}  Arrival: {train['arrival']}"
+            f"{train['type']} {train['number']:<10} "
+            f"Departure: {train['departure']}  Arrival: {train['arrival']}"
         )
