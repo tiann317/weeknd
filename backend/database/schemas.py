@@ -10,15 +10,32 @@ class User(BaseModel):
 class UserBase(User):
     email: EmailStr
     username: str
-    is_active: bool = True
 
 
 class UserCreate(UserBase):
     password: str
 
 
+class UserRegister(BaseModel):
+    email: EmailStr
+    username: str
+    password: str
+
+
 class UserPublic(UserBase):
-    created_at: datetime | None = None
+    is_active: bool
+    created_at: datetime
     id: uuid.UUID
 
 
+class Token(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+
+
+class TokenPayload(BaseModel):
+    sub: uuid.UUID
+
+
+class Message(BaseModel):
+    message: str
