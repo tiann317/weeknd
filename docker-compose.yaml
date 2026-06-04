@@ -1,5 +1,5 @@
 services:
-  db:
+  pg_sql:
     image: postgres:16-alpine
     env_file:
         - ./backend/.env
@@ -12,6 +12,20 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    env_file:
+      - ./backend/.env
+    environment:
+      - POSTGRES_PORT=5432
+    ports:
+      - 8000:8000
+    depends_on:
+      pg_sql:
+        condition: service_healthy
 
 volumes:
   postgres_data:
