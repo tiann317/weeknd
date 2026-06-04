@@ -25,7 +25,7 @@ def upgrade() -> None:
     sa.Column('id', sa.UUID(), nullable=False),
     sa.Column('email', sa.VARCHAR(length=255), nullable=False),
     sa.Column('username', sa.VARCHAR(length=255), nullable=False),
-    sa.Column('is_active', sa.Boolean(), nullable=False),
+    sa.Column('is_active', sa.Boolean(), nullable=False, server_default='true'),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('hashed_password', sa.VARCHAR(length=255), nullable=False),
     sa.PrimaryKeyConstraint('id')
