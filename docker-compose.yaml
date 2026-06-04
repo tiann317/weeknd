@@ -27,5 +27,14 @@ services:
       pg_sql:
         condition: service_healthy
 
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - 4200:80
+    depends_on:
+      - backend
+
 volumes:
   postgres_data:
