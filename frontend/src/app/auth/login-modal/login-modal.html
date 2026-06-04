@@ -1,0 +1,35 @@
+<div class="overlay" (click)="closed.emit()"></div>
+
+<div class="modal">
+  <div class="tabs">
+    <button [class.active]="tab() === 'login'" (click)="switchTab('login')">Login</button>
+    <button [class.active]="tab() === 'register'" (click)="switchTab('register')">Register</button>
+  </div>
+
+  <form (ngSubmit)="submit()">
+    <div class="field">
+      <label>Email</label>
+      <input type="email" [(ngModel)]="email" name="email" required autocomplete="email" />
+    </div>
+
+    @if (tab() === 'register') {
+      <div class="field">
+        <label>Username</label>
+        <input type="text" [(ngModel)]="username" name="username" required autocomplete="username" />
+      </div>
+    }
+
+    <div class="field">
+      <label>Password</label>
+      <input type="password" [(ngModel)]="password" name="password" required autocomplete="current-password" />
+    </div>
+
+    @if (error()) {
+      <p class="error">{{ error() }}</p>
+    }
+
+    <button type="submit" class="submit-btn" [disabled]="loading()">
+      {{ loading() ? 'Please wait...' : tab() === 'login' ? 'Login' : 'Register' }}
+    </button>
+  </form>
+</div>

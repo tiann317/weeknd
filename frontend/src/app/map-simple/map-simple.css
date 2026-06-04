@@ -45,6 +45,12 @@
   background: #f3f4f6;
 }
 
+.nav-username {
+  font-size: 0.9rem;
+  color: #374151;
+  margin-right: 0.5rem;
+}
+
 .nav-actions .login-btn {
   padding: 0.4rem 1.1rem;
   border: 1.5px solid #1a1a1a;

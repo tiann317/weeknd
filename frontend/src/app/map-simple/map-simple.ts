@@ -1,10 +1,12 @@
-import { AfterViewInit, Component, ElementRef, ViewChild, inject, ChangeDetectorRef } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild, inject, ChangeDetectorRef, signal } from '@angular/core';
 import { Map, map, marker, tileLayer } from 'leaflet';
 import { Geolocation } from '../geolocation';
+import { AuthService } from '../auth/auth.service';
+import { LoginModal } from '../auth/login-modal/login-modal';
 
 @Component({
   selector: 'app-map-simple',
-  imports: [],
+  imports: [LoginModal],
   templateUrl: './map-simple.html',
   styleUrl: './map-simple.css',
 })
@@ -12,6 +14,9 @@ import { Geolocation } from '../geolocation';
 export class MapSimple implements AfterViewInit {
   private readonly geolocation: Geolocation = inject(Geolocation);
   private readonly detector: ChangeDetectorRef = inject(ChangeDetectorRef);
+  readonly auth = inject(AuthService);
+
+  showLoginModal = signal(false);
 
   @ViewChild('map')
   mapElementRef: ElementRef = null!;

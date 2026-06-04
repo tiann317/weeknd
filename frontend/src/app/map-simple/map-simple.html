@@ -7,8 +7,17 @@
     <button>Saved</button>
   </div>
   <div class="nav-actions">
-    <button class="login-btn">Login</button>
+    @if (auth.isLoggedIn()) {
+      <span class="nav-username">{{ auth.currentUser()?.username }}</span>
+      <button class="login-btn" (click)="auth.logout()">Logout</button>
+    } @else {
+      <button class="login-btn" (click)="showLoginModal.set(true)">Login</button>
+    }
   </div>
 </nav>
 
 <div id="map" #map></div>
+
+@if (showLoginModal()) {
+  <app-login-modal (closed)="showLoginModal.set(false)" />
+}
