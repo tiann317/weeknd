@@ -1,0 +1,12 @@
+services:
+  pg_sql:
+    ports:
+      - 5433:5432
+
+  backend:
+    ports:
+      - 8000:8000
+
+  frontend:
+    ports:
+      - 4200:80

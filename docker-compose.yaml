@@ -14,25 +14,23 @@ services:
       retries: 5
 
   backend:
+    image: ghcr.io/tiann317/weeknd-backend:latest
     build:
-      context: .
-      dockerfile: backend/Dockerfile
+      context: ./backend
+      dockerfile: ./Dockerfile
     env_file:
       - ./backend/.env
     environment:
       - POSTGRES_PORT=5432
-    ports:
-      - 8000:8000
     depends_on:
       pg_sql:
         condition: service_healthy
 
   frontend:
+    image: ghcr.io/tiann317/weeknd-frontend:latest
     build:
       context: ./frontend
-      dockerfile: Dockerfile
-    ports:
-      - 4200:80
+      dockerfile: ./Dockerfile
     depends_on:
       - backend
 
