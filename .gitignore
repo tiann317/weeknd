@@ -6,5 +6,3 @@ backend/.env
 backend/utils/
 
 node_modules/
-package-lock.json
-package.json
