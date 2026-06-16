@@ -20,12 +20,10 @@ export class Geolocation {
             observer.next(position.coords);
             observer.complete();
             console.log('DEBUG INFO:');
-            console.log('Accuracy:', position.coords.accuracy);
             console.log('Lat:', position.coords.latitude);
             console.log('Lng:', position.coords.longitude);
           });
-        },
-        (error) => this.ngZone.run(() => observer.error(error)),
+        }, (error) => this.ngZone.run(() => observer.error(error)),
         {
           enableHighAccuracy: true,
           timeout: 10000,
