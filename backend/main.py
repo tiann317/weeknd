@@ -3,6 +3,7 @@ import uvicorn
 from starlette.middleware.cors import CORSMiddleware
 from routes.user import router as u
 from routes.login import router as l
+from routes.hike import router as h
 
 app = FastAPI()
 
@@ -17,8 +18,7 @@ app.add_middleware(
 
 app.include_router(u)
 app.include_router(l)
+app.include_router(h)
 
 if __name__ == "__main__":
-    uvicorn.run(
-        "main:app", port=8000, host="0.0.0.0", reload=True, forwarded_allow_ips="*"
-    )
+    uvicorn.run("main:app", port=8000, host="0.0.0.0", reload=True, forwarded_allow_ips="*")
