@@ -1,8 +1,10 @@
 import { AfterViewInit, Component, ElementRef, ViewChild, inject, ChangeDetectorRef, signal } from '@angular/core';
-import { Map, map, marker, tileLayer } from 'leaflet';
+import { LayerGroup, Map, layerGroup, map, marker, tileLayer } from 'leaflet';
 import { Geolocation } from '../geolocation';
 import { AuthService } from '../auth/auth.service';
 import { LoginModal } from '../auth/login-modal/login-modal';
+import { HikeService } from '../hike/hike.service';
+import { HikeDetail } from '../hike/hike.models';
 
 @Component({
   selector: 'app-map-simple',
@@ -14,9 +16,13 @@ import { LoginModal } from '../auth/login-modal/login-modal';
 export class MapSimple implements AfterViewInit {
   private readonly geolocation: Geolocation = inject(Geolocation);
   private readonly detector: ChangeDetectorRef = inject(ChangeDetectorRef);
+  private readonly hikeService: HikeService = inject(HikeService);
   readonly auth = inject(AuthService);
 
   showLoginModal = signal(false);
+  selected = signal<HikeDetail | null>(null);
+
+  private hikeLayer: LayerGroup = layerGroup();
 
   @ViewChild('map')
   mapElementRef: ElementRef = null!;
@@ -28,10 +34,22 @@ export class MapSimple implements AfterViewInit {
     this.map = map(this.mapElementRef.nativeElement)
       .setView([46.801111, 8.226667], 8);
 
+    this.map.attributionControl.setPrefix(false);
     tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(this.map);
+
+    this.hikeLayer.addTo(this.map);
+    this.hikeService.list().subscribe(hikes => {
+      this.hikeLayer.clearLayers();
+      for (const h of hikes) {
+        marker([h.start_lat, h.start_lon])
+          .bindTooltip(h.title)
+          .on('click', () => this.hikeService.get(h.id).subscribe(d => this.selected.set(d)))
+          .addTo(this.hikeLayer);
+      }
+    });
 
     this.geolocation.getCurrentPosition().subscribe({
       next: (coords) => {

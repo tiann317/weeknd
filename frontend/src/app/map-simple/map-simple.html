@@ -18,6 +18,17 @@
 
 <div id="map" #map></div>
 
+@if (selected(); as h) {
+  <aside class="hike-detail">
+  <h2>{{ h.title }}</h2>
+  <p>{{ h.distance_km }} km · {{ h.duration_min }} min · {{ h.region }}</p>
+    @if (h.start_station) {
+      <p>Start: {{ h.start_station.name }}</p>
+    }
+  <button (click)="selected.set(null)">Close</button>
+  </aside>
+}
+
 @if (showLoginModal()) {
   <app-login-modal (closed)="showLoginModal.set(false)" />
 }
