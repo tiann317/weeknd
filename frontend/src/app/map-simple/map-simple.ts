@@ -21,6 +21,8 @@ export class MapSimple implements AfterViewInit {
 
   showLoginModal = signal(false);
   selected = signal<HikeDetail | null>(null);
+  region = signal<string | null>(null);
+  preset = ["Garmisch", "Kochel", "Ammersee"];
 
   private hikeLayer: LayerGroup = layerGroup();
 
@@ -29,7 +31,21 @@ export class MapSimple implements AfterViewInit {
 
   public map: Map = null!;
 
+  loadHikes() {
+    this.hikeService.list(this.region() ?? undefined).subscribe(hikes => {
+      this.hikeLayer.clearLayers();
+      for (const h of hikes) {
+        marker([h.start_lat, h.start_lon])
+          .bindTooltip(h.title)
+          .on('click', () => this.hikeService.get(h.id).subscribe(d =>
+            this.selected.set(d)))
+          .addTo(this.hikeLayer);
+      }
+    });
+  }
+
   ngAfterViewInit(): void {
+
 
     this.map = map(this.mapElementRef.nativeElement)
       .setView([46.801111, 8.226667], 8);
@@ -41,15 +57,7 @@ export class MapSimple implements AfterViewInit {
     }).addTo(this.map);
 
     this.hikeLayer.addTo(this.map);
-    this.hikeService.list().subscribe(hikes => {
-      this.hikeLayer.clearLayers();
-      for (const h of hikes) {
-        marker([h.start_lat, h.start_lon])
-          .bindTooltip(h.title)
-          .on('click', () => this.hikeService.get(h.id).subscribe(d => this.selected.set(d)))
-          .addTo(this.hikeLayer);
-      }
-    });
+    this.loadHikes();
 
     this.geolocation.getCurrentPosition().subscribe({
       next: (coords) => {
