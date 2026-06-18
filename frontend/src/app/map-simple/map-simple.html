@@ -16,15 +16,16 @@
   </div>
 </nav>
 
+
 <div id="map" #map></div>
 
-<select (change)="onRegionChange($any($event.target).value)">
+<select class="region-picker"
+(change)="onRegionChange($any($event.target).value)">
     <option value="">All</option>
     @for (r of preset; track r) {
       <option [value]="r">{{ r }}</option>
     }
 </select>
-
 
 @if (selected(); as h) {
   <aside class="hike-detail">

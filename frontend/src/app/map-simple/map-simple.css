@@ -31,6 +31,19 @@
   flex: 1;
 }
 
+.region-picker {
+    position: absolute;
+    top: 70px;
+    right: 16px;
+    z-index: 1000;
+    padding: 6px 10px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.15);
+    cursor: pointer;
+}
+
 .nav-links button {
   padding: 0.4rem 0.9rem;
   border: none;
@@ -71,8 +84,8 @@
   flex: 1;
 }
 
-hike-detail {
-  position: absolute;
+.hike-detail {
+  position: floating;
   top: 80px;
   right: 16px;
   z-index: 1000;
@@ -82,3 +95,4 @@ hike-detail {
   box-shadow: 0 2px 8px rgba(0,0,0,.2);
   max-width: 300px;
 }
+
