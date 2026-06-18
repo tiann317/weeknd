@@ -17,6 +17,14 @@ export class HikeService {
     return this.http.get<HikeListItem[]>(this.base, { params });
   }
 
+  nearby(lat: number, lon: number, radiusKm = 30): Observable<HikeListItem[]> {
+    const params = new HttpParams()
+      .set('lat', lat)
+      .set('lon', lon)
+      .set('radius_km', radiusKm);
+    return this.http.get<HikeListItem[]>(`${this.base}/nearby`, { params });
+  }
+
   get(id: string): Observable<HikeDetail> {
     return this.http.get<HikeDetail>(`${this.base}/${id}`);
   }

@@ -4,7 +4,7 @@ import { Geolocation } from '../geolocation';
 import { AuthService } from '../auth/auth.service';
 import { LoginModal } from '../auth/login-modal/login-modal';
 import { HikeService } from '../hike/hike.service';
-import { HikeDetail } from '../hike/hike.models';
+import { HikeDetail, HikeListItem } from '../hike/hike.models';
 
 @Component({
   selector: 'app-map-simple',
@@ -32,16 +32,7 @@ export class MapSimple implements AfterViewInit {
   public map: Map = null!;
 
   loadHikes() {
-    this.hikeService.list(this.region() ?? undefined).subscribe(hikes => {
-      this.hikeLayer.clearLayers();
-      for (const h of hikes) {
-        marker([h.start_lat, h.start_lon])
-          .bindTooltip(h.title)
-          .on('click', () => this.hikeService.get(h.id).subscribe(d =>
-            this.selected.set(d)))
-          .addTo(this.hikeLayer);
-      }
-    });
+    this.hikeService.list(this.region() ?? undefined).subscribe(h => this.drawHikes(h))
   }
 
   onRegionChange(r: string | null) {
@@ -49,8 +40,27 @@ export class MapSimple implements AfterViewInit {
     this.loadHikes();
   }
 
-  ngAfterViewInit(): void {
+  drawHikes(hikes: HikeListItem[]) {
+    this.hikeLayer.clearLayers();
+    for (const h of hikes) {
+      marker([h.start_lat, h.start_lon])
+        .bindTooltip(h.title)
+        .on('click', () => this.hikeService.get(h.id).subscribe(d => this.selected.set(d)))
+        .addTo(this.hikeLayer);
+    }
+  }
 
+  loadNearby() {
+    this.geolocation.getCurrentPosition().subscribe({
+      next: (c) => {
+        this.map.setView([c.latitude, c.longitude], 11);
+        this.hikeService.nearby(c.latitude, c.longitude).subscribe(h => this.drawHikes(h));
+      },
+      error: (err) => console.error('ERROR:', err),
+    });
+  }
+
+  ngAfterViewInit(): void {
 
     this.map = map(this.mapElementRef.nativeElement)
       .setView([46.801111, 8.226667], 8);

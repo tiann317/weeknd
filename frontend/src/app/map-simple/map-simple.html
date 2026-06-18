@@ -5,6 +5,7 @@
     <button>Routes</button>
     <button>Feed</button>
     <button>Saved</button>
+    <button class="near-me-btn" (click)="loadNearby()">Hikes near me</button>
   </div>
   <div class="nav-actions">
     @if (auth.isLoggedIn()) {
