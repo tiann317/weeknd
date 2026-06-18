@@ -44,6 +44,11 @@ export class MapSimple implements AfterViewInit {
     });
   }
 
+  onRegionChange(r: string | null) {
+    this.region.set(r);
+    this.loadHikes();
+  }
+
   ngAfterViewInit(): void {
 
 
@@ -57,6 +62,7 @@ export class MapSimple implements AfterViewInit {
     }).addTo(this.map);
 
     this.hikeLayer.addTo(this.map);
+
     this.loadHikes();
 
     this.geolocation.getCurrentPosition().subscribe({
