@@ -31,6 +31,7 @@
 @if (selected(); as h) {
   <aside class="hike-detail">
   <h2>{{ h.title }}</h2>
+    <img class="hike-photo" src="5307907987164830329.jpg" alt="{{ h.title }}">
   <p>{{ h.distance_km }} km · {{ h.duration_min }} min · {{ h.region }}</p>
     @if (h.start_station) {
       <p>Start: {{ h.start_station.name }}</p>
